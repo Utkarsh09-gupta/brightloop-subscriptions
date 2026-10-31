@@ -189,7 +189,7 @@ export function buildSeed(): DemoDatabase {
   ];
 
   return {
-    products, plans, customers, taxRules, discounts, discountUsages, quotationTemplates, quotations,
+    products, plans, customers, taxRules, discounts, discountUsages, quotationTemplates: templates, quotations,
     subscriptions, invoices, payments, notifications,
     counters: { quotation: 4, subscription: 6, invoice: inv, payment: pay },
   };
