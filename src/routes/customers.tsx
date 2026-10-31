@@ -24,7 +24,7 @@ import { INR0, fmtDate, isOverdue, today, uid } from "@/lib/format";
 import type { Customer } from "@/lib/types";
 
 export const Route = createFileRoute("/customers")({
-  validateSearch: (s: Record<string, string>) => ({ new: s.new === "1" ? "1" : undefined }),
+  validateSearch: (s: { new?: string }) => ({ new: s.new === "1" ? "1" : undefined }),
   component: CustomersPage,
 });
 
@@ -55,8 +55,14 @@ function CustomersPage() {
   }, [store.customers, query]);
 
   const save = (c: Customer) => {
-    if (!c.name.trim() || !c.email.trim()) return toast.error("Name and email are required");
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c.email)) return toast.error("Enter a valid email address");
+    if (!c.name.trim() || !c.email.trim()) {
+      toast.error("Name and email are required");
+      return;
+    }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c.email)) {
+      toast.error("Enter a valid email address");
+      return;
+    }
     store.upsertCustomer(c);
     toast.success(isNew ? "Customer added" : "Customer updated");
     setEditing(null);
