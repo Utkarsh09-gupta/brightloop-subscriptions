@@ -10,33 +10,138 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CustomersRouteImport } from './routes/customers'
+import { Route as PlansRouteImport } from './routes/plans'
+import { Route as ProductsRouteImport } from './routes/products'
+import { Route as QuotationsRouteImport } from './routes/quotations'
+import { Route as SubscriptionsRouteImport } from './routes/subscriptions'
+import { Route as CustomersIdRouteImport } from './routes/customers.$id'
+import { Route as QuotationsIdRouteImport } from './routes/quotations.$id'
+import { Route as SubscriptionsIdRouteImport } from './routes/subscriptions.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CustomersRoute = CustomersRouteImport.update({
+  id: '/customers',
+  path: '/customers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlansRoute = PlansRouteImport.update({
+  id: '/plans',
+  path: '/plans',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuotationsRoute = QuotationsRouteImport.update({
+  id: '/quotations',
+  path: '/quotations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SubscriptionsRoute = SubscriptionsRouteImport.update({
+  id: '/subscriptions',
+  path: '/subscriptions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CustomersIdRoute = CustomersIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => CustomersRoute,
+} as any)
+const QuotationsIdRoute = QuotationsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => QuotationsRoute,
+} as any)
+const SubscriptionsIdRoute = SubscriptionsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => SubscriptionsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/customers': typeof CustomersRouteWithChildren
+  '/plans': typeof PlansRoute
+  '/products': typeof ProductsRoute
+  '/quotations': typeof QuotationsRouteWithChildren
+  '/subscriptions': typeof SubscriptionsRouteWithChildren
+  '/customers/$id': typeof CustomersIdRoute
+  '/quotations/$id': typeof QuotationsIdRoute
+  '/subscriptions/$id': typeof SubscriptionsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/customers': typeof CustomersRouteWithChildren
+  '/plans': typeof PlansRoute
+  '/products': typeof ProductsRoute
+  '/quotations': typeof QuotationsRouteWithChildren
+  '/subscriptions': typeof SubscriptionsRouteWithChildren
+  '/customers/$id': typeof CustomersIdRoute
+  '/quotations/$id': typeof QuotationsIdRoute
+  '/subscriptions/$id': typeof SubscriptionsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/customers': typeof CustomersRouteWithChildren
+  '/plans': typeof PlansRoute
+  '/products': typeof ProductsRoute
+  '/quotations': typeof QuotationsRouteWithChildren
+  '/subscriptions': typeof SubscriptionsRouteWithChildren
+  '/customers/$id': typeof CustomersIdRoute
+  '/quotations/$id': typeof QuotationsIdRoute
+  '/subscriptions/$id': typeof SubscriptionsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/customers'
+    | '/plans'
+    | '/products'
+    | '/quotations'
+    | '/subscriptions'
+    | '/customers/$id'
+    | '/quotations/$id'
+    | '/subscriptions/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/customers'
+    | '/plans'
+    | '/products'
+    | '/quotations'
+    | '/subscriptions'
+    | '/customers/$id'
+    | '/quotations/$id'
+    | '/subscriptions/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/customers'
+    | '/plans'
+    | '/products'
+    | '/quotations'
+    | '/subscriptions'
+    | '/customers/$id'
+    | '/quotations/$id'
+    | '/subscriptions/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CustomersRoute: typeof CustomersRouteWithChildren
+  PlansRoute: typeof PlansRoute
+  ProductsRoute: typeof ProductsRoute
+  QuotationsRoute: typeof QuotationsRouteWithChildren
+  SubscriptionsRoute: typeof SubscriptionsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +153,108 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/customers': {
+      id: '/customers'
+      path: '/customers'
+      fullPath: '/customers'
+      preLoaderRoute: typeof CustomersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plans': {
+      id: '/plans'
+      path: '/plans'
+      fullPath: '/plans'
+      preLoaderRoute: typeof PlansRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quotations': {
+      id: '/quotations'
+      path: '/quotations'
+      fullPath: '/quotations'
+      preLoaderRoute: typeof QuotationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/subscriptions': {
+      id: '/subscriptions'
+      path: '/subscriptions'
+      fullPath: '/subscriptions'
+      preLoaderRoute: typeof SubscriptionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/customers/$id': {
+      id: '/customers/$id'
+      path: '/$id'
+      fullPath: '/customers/$id'
+      preLoaderRoute: typeof CustomersIdRouteImport
+      parentRoute: typeof CustomersRoute
+    }
+    '/quotations/$id': {
+      id: '/quotations/$id'
+      path: '/$id'
+      fullPath: '/quotations/$id'
+      preLoaderRoute: typeof QuotationsIdRouteImport
+      parentRoute: typeof QuotationsRoute
+    }
+    '/subscriptions/$id': {
+      id: '/subscriptions/$id'
+      path: '/$id'
+      fullPath: '/subscriptions/$id'
+      preLoaderRoute: typeof SubscriptionsIdRouteImport
+      parentRoute: typeof SubscriptionsRoute
+    }
   }
 }
 
+interface CustomersRouteChildren {
+  CustomersIdRoute: typeof CustomersIdRoute
+}
+
+const CustomersRouteChildren: CustomersRouteChildren = {
+  CustomersIdRoute: CustomersIdRoute,
+}
+
+const CustomersRouteWithChildren = CustomersRoute._addFileChildren(
+  CustomersRouteChildren,
+)
+
+interface QuotationsRouteChildren {
+  QuotationsIdRoute: typeof QuotationsIdRoute
+}
+
+const QuotationsRouteChildren: QuotationsRouteChildren = {
+  QuotationsIdRoute: QuotationsIdRoute,
+}
+
+const QuotationsRouteWithChildren = QuotationsRoute._addFileChildren(
+  QuotationsRouteChildren,
+)
+
+interface SubscriptionsRouteChildren {
+  SubscriptionsIdRoute: typeof SubscriptionsIdRoute
+}
+
+const SubscriptionsRouteChildren: SubscriptionsRouteChildren = {
+  SubscriptionsIdRoute: SubscriptionsIdRoute,
+}
+
+const SubscriptionsRouteWithChildren = SubscriptionsRoute._addFileChildren(
+  SubscriptionsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CustomersRoute: CustomersRouteWithChildren,
+  PlansRoute: PlansRoute,
+  ProductsRoute: ProductsRoute,
+  QuotationsRoute: QuotationsRouteWithChildren,
+  SubscriptionsRoute: SubscriptionsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
