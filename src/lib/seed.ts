@@ -24,6 +24,7 @@ export interface DemoDatabase {
   customers: Customer[];
   taxRules: TaxRule[];
   discounts: Discount[];
+  discountUsages: DiscountUsage[];
   quotationTemplates: QuotationTemplate[];
   quotations: Quotation[];
   subscriptions: Subscription[];
@@ -182,8 +183,13 @@ export function buildSeed(): DemoDatabase {
     { id: uid(), title: "Payment received", body: "₹19,620 received via UPI against INV-0005.", at: daysAgo(9), read: true, kind: "success" },
   ];
 
+  const discountUsages: DiscountUsage[] = [
+    { id: uid(), discountId: discounts[0].id, invoiceId: invoices[2]?.id ?? "", amount: 3600, usedAt: daysAgo(45) },
+    { id: uid(), discountId: discounts[1].id, invoiceId: invoices[1]?.id ?? "", amount: 2000, usedAt: daysAgo(70) },
+  ];
+
   return {
-    products, plans, customers, taxRules, discounts, quotationTemplates, quotations,
+    products, plans, customers, taxRules, discounts, discountUsages, quotationTemplates, quotations,
     subscriptions, invoices, payments, notifications,
     counters: { quotation: 4, subscription: 6, invoice: inv, payment: pay },
   };
