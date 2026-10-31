@@ -33,6 +33,7 @@ import { PageHeader, EmptyState, StatusBadge, StatCard } from "@/components/shar
 import { useStore, paidAmountFor, outstandingFor } from "@/lib/store";
 import { INR, fmtDate, isOverdue } from "@/lib/format";
 import { PaymentDialog } from "./invoices.$id";
+import { CustomerCheckoutDialog } from "@/components/shared/customer-checkout-dialog";
 import type { Invoice } from "@/lib/types";
 
 export const Route = createFileRoute("/invoices")({
@@ -267,7 +268,13 @@ function InvoicesPage() {
                     </TableCell>
 
                     <TableCell className="text-right">
-                      <DropdownMenu>
+                      <div className="flex items-center justify-end gap-1.5">
+                        {isCustomer && balance > 0 && inv.status !== "cancelled" && (
+                          <Button size="sm" onClick={() => setPayingInvoice(inv)} className="h-7 text-xs px-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium">
+                            Pay Online
+                          </Button>
+                        )}
+                        <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" size="icon" className="h-8 w-8">
                             <MoreHorizontal className="h-4 w-4" />
@@ -318,6 +325,7 @@ function InvoicesPage() {
                           )}
                         </DropdownMenuContent>
                       </DropdownMenu>
+                      </div>
                     </TableCell>
                   </TableRow>
                 );
@@ -328,7 +336,11 @@ function InvoicesPage() {
       )}
 
       {payingInvoice && (
-        <PaymentDialog invoice={payingInvoice} onClose={() => setPayingInvoice(null)} />
+        isCustomer ? (
+          <CustomerCheckoutDialog invoice={payingInvoice} onClose={() => setPayingInvoice(null)} />
+        ) : (
+          <PaymentDialog invoice={payingInvoice} onClose={() => setPayingInvoice(null)} />
+        )
       )}
     </div>
   );

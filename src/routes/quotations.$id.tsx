@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { ArrowRight, Printer, Trash2, Plus } from "lucide-react";
+import { ArrowRight, Printer, Trash2, Plus, PenTool } from "lucide-react";
+import { AcceptQuotationDialog } from "@/components/shared/accept-quotation-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -138,6 +139,7 @@ function QuotationDetail() {
   const { id } = Route.useParams();
   const store = useStore();
   const [editing, setEditing] = useState(false);
+  const [signDialogOpen, setSignDialogOpen] = useState(false);
   const q = store.quotations.find((x) => x.id === id);
   if (!q) return <p className="text-sm text-muted-foreground">Quotation not found.</p>;
 
@@ -161,6 +163,11 @@ function QuotationDetail() {
         <div className="flex flex-wrap gap-2">
           <Button size="sm" variant="outline" onClick={() => setEditing(true)}>Edit</Button>
           <Button size="sm" variant="outline" onClick={() => window.print()}><Printer className="size-4" /> Print / PDF</Button>
+          {q.status !== "accepted" && q.status !== "cancelled" && (
+            <Button size="sm" onClick={() => setSignDialogOpen(true)} className="gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium">
+              <PenTool className="size-4" /> Review & Sign
+            </Button>
+          )}
           {actions.filter((a) => a.status !== q.status).map((a) => (
             <Button key={a.label} size="sm" variant={a.status === "accepted" ? "default" : "outline"}
               onClick={() => { store.setQuotationStatus(q.id, a.status!); toast.success(`${q.number} ${a.status}`); }}>
@@ -222,6 +229,7 @@ function QuotationDetail() {
       </Card>
 
       {editing && <QuotationDialog quotation={q} onClose={() => setEditing(false)} />}
+      {signDialogOpen && <AcceptQuotationDialog quotation={q} onClose={() => setSignDialogOpen(false)} />}
     </div>
   );
 }

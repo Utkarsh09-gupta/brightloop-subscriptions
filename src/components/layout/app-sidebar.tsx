@@ -35,7 +35,7 @@ const NAV: NavGroup[] = [
     label: "Sales",
     items: [
       { title: "Customers", url: "/customers", icon: Users, roles: ["admin", "staff"] },
-      { title: "Quotations", url: "/quotations", icon: FileText, roles: ["admin", "staff"] },
+      { title: "Quotations", url: "/quotations", icon: FileText, roles: ["admin", "staff", "customer"] },
       { title: "Subscriptions", url: "/subscriptions", icon: CalendarClock, roles: ["admin", "staff", "customer"] },
     ],
   },

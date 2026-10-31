@@ -41,6 +41,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { StatusBadge, Field } from "@/components/shared/bits";
+import { CustomerCheckoutDialog } from "@/components/shared/customer-checkout-dialog";
 import { useStore, paidAmountFor, outstandingFor } from "@/lib/store";
 import { INR, fmtDate, today, uid, isOverdue } from "@/lib/format";
 import type { Invoice, Payment, PaymentMethod } from "@/lib/types";
@@ -183,6 +184,8 @@ function InvoiceDetailPage() {
   const { id } = useParams({ from: "/invoices/$id" });
   const store = useStore();
   const [payDialogOpen, setPayDialogOpen] = useState(false);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const isCustomer = store.role === "customer";
 
   const invoice = store.invoices.find((i) => i.id === id);
   if (!invoice) {
@@ -249,11 +252,11 @@ function InvoiceDetailPage() {
           {balance > 0 && invoice.status !== "cancelled" && (
             <Button
               size="sm"
-              onClick={() => setPayDialogOpen(true)}
-              className="gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white"
+              onClick={() => isCustomer ? setCheckoutOpen(true) : setPayDialogOpen(true)}
+              className="gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium"
             >
               <CreditCard className="h-4 w-4" />
-              Record Payment
+              {isCustomer ? `Pay Online (${INR(balance)})` : "Record Payment"}
             </Button>
           )}
 
@@ -481,6 +484,8 @@ function InvoiceDetailPage() {
       </Card>
 
       {payDialogOpen && <PaymentDialog invoice={invoice} onClose={() => setPayDialogOpen(false)} />}
+      {checkoutOpen && <CustomerCheckoutDialog invoice={invoice} onClose={() => setCheckoutOpen(false)} />}
     </div>
   );
 }
+
