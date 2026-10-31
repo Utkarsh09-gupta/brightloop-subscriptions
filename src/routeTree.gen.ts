@@ -14,8 +14,10 @@ import { Route as CustomersRouteImport } from './routes/customers'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as QuotationsRouteImport } from './routes/quotations'
+import { Route as SubscriptionsRouteImport } from './routes/subscriptions'
 import { Route as CustomersIdRouteImport } from './routes/customers.$id'
 import { Route as QuotationsIdRouteImport } from './routes/quotations.$id'
+import { Route as SubscriptionsIdRouteImport } from './routes/subscriptions.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -42,6 +44,11 @@ const QuotationsRoute = QuotationsRouteImport.update({
   path: '/quotations',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SubscriptionsRoute = SubscriptionsRouteImport.update({
+  id: '/subscriptions',
+  path: '/subscriptions',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CustomersIdRoute = CustomersIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -52,6 +59,11 @@ const QuotationsIdRoute = QuotationsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => QuotationsRoute,
 } as any)
+const SubscriptionsIdRoute = SubscriptionsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => SubscriptionsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -59,8 +71,10 @@ export interface FileRoutesByFullPath {
   '/plans': typeof PlansRoute
   '/products': typeof ProductsRoute
   '/quotations': typeof QuotationsRouteWithChildren
+  '/subscriptions': typeof SubscriptionsRouteWithChildren
   '/customers/$id': typeof CustomersIdRoute
   '/quotations/$id': typeof QuotationsIdRoute
+  '/subscriptions/$id': typeof SubscriptionsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -68,8 +82,10 @@ export interface FileRoutesByTo {
   '/plans': typeof PlansRoute
   '/products': typeof ProductsRoute
   '/quotations': typeof QuotationsRouteWithChildren
+  '/subscriptions': typeof SubscriptionsRouteWithChildren
   '/customers/$id': typeof CustomersIdRoute
   '/quotations/$id': typeof QuotationsIdRoute
+  '/subscriptions/$id': typeof SubscriptionsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -78,8 +94,10 @@ export interface FileRoutesById {
   '/plans': typeof PlansRoute
   '/products': typeof ProductsRoute
   '/quotations': typeof QuotationsRouteWithChildren
+  '/subscriptions': typeof SubscriptionsRouteWithChildren
   '/customers/$id': typeof CustomersIdRoute
   '/quotations/$id': typeof QuotationsIdRoute
+  '/subscriptions/$id': typeof SubscriptionsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -89,8 +107,10 @@ export interface FileRouteTypes {
     | '/plans'
     | '/products'
     | '/quotations'
+    | '/subscriptions'
     | '/customers/$id'
     | '/quotations/$id'
+    | '/subscriptions/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -98,8 +118,10 @@ export interface FileRouteTypes {
     | '/plans'
     | '/products'
     | '/quotations'
+    | '/subscriptions'
     | '/customers/$id'
     | '/quotations/$id'
+    | '/subscriptions/$id'
   id:
     | '__root__'
     | '/'
@@ -107,8 +129,10 @@ export interface FileRouteTypes {
     | '/plans'
     | '/products'
     | '/quotations'
+    | '/subscriptions'
     | '/customers/$id'
     | '/quotations/$id'
+    | '/subscriptions/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -117,6 +141,7 @@ export interface RootRouteChildren {
   PlansRoute: typeof PlansRoute
   ProductsRoute: typeof ProductsRoute
   QuotationsRoute: typeof QuotationsRouteWithChildren
+  SubscriptionsRoute: typeof SubscriptionsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -156,6 +181,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuotationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/subscriptions': {
+      id: '/subscriptions'
+      path: '/subscriptions'
+      fullPath: '/subscriptions'
+      preLoaderRoute: typeof SubscriptionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/customers/$id': {
       id: '/customers/$id'
       path: '/$id'
@@ -169,6 +201,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/quotations/$id'
       preLoaderRoute: typeof QuotationsIdRouteImport
       parentRoute: typeof QuotationsRoute
+    }
+    '/subscriptions/$id': {
+      id: '/subscriptions/$id'
+      path: '/$id'
+      fullPath: '/subscriptions/$id'
+      preLoaderRoute: typeof SubscriptionsIdRouteImport
+      parentRoute: typeof SubscriptionsRoute
     }
   }
 }
@@ -197,12 +236,25 @@ const QuotationsRouteWithChildren = QuotationsRoute._addFileChildren(
   QuotationsRouteChildren,
 )
 
+interface SubscriptionsRouteChildren {
+  SubscriptionsIdRoute: typeof SubscriptionsIdRoute
+}
+
+const SubscriptionsRouteChildren: SubscriptionsRouteChildren = {
+  SubscriptionsIdRoute: SubscriptionsIdRoute,
+}
+
+const SubscriptionsRouteWithChildren = SubscriptionsRoute._addFileChildren(
+  SubscriptionsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CustomersRoute: CustomersRouteWithChildren,
   PlansRoute: PlansRoute,
   ProductsRoute: ProductsRoute,
   QuotationsRoute: QuotationsRouteWithChildren,
+  SubscriptionsRoute: SubscriptionsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
