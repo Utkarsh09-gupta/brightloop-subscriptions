@@ -3,6 +3,7 @@ import type {
   AppNotification,
   Customer,
   Discount,
+  DiscountUsage,
   Invoice,
   Payment,
   Plan,
