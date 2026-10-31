@@ -13,7 +13,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CustomersRouteImport } from './routes/customers'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as ProductsRouteImport } from './routes/products'
+import { Route as QuotationsRouteImport } from './routes/quotations'
 import { Route as CustomersIdRouteImport } from './routes/customers.$id'
+import { Route as QuotationsIdRouteImport } from './routes/quotations.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -35,10 +37,20 @@ const ProductsRoute = ProductsRouteImport.update({
   path: '/products',
   getParentRoute: () => rootRouteImport,
 } as any)
+const QuotationsRoute = QuotationsRouteImport.update({
+  id: '/quotations',
+  path: '/quotations',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CustomersIdRoute = CustomersIdRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => CustomersRoute,
+} as any)
+const QuotationsIdRoute = QuotationsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => QuotationsRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -46,14 +58,18 @@ export interface FileRoutesByFullPath {
   '/customers': typeof CustomersRouteWithChildren
   '/plans': typeof PlansRoute
   '/products': typeof ProductsRoute
+  '/quotations': typeof QuotationsRouteWithChildren
   '/customers/$id': typeof CustomersIdRoute
+  '/quotations/$id': typeof QuotationsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/customers': typeof CustomersRouteWithChildren
   '/plans': typeof PlansRoute
   '/products': typeof ProductsRoute
+  '/quotations': typeof QuotationsRouteWithChildren
   '/customers/$id': typeof CustomersIdRoute
+  '/quotations/$id': typeof QuotationsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -61,15 +77,38 @@ export interface FileRoutesById {
   '/customers': typeof CustomersRouteWithChildren
   '/plans': typeof PlansRoute
   '/products': typeof ProductsRoute
+  '/quotations': typeof QuotationsRouteWithChildren
   '/customers/$id': typeof CustomersIdRoute
+  '/quotations/$id': typeof QuotationsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/customers' | '/plans' | '/products' | '/customers/$id'
+  fullPaths:
+    | '/'
+    | '/customers'
+    | '/plans'
+    | '/products'
+    | '/quotations'
+    | '/customers/$id'
+    | '/quotations/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/customers' | '/plans' | '/products' | '/customers/$id'
+  to:
+    | '/'
+    | '/customers'
+    | '/plans'
+    | '/products'
+    | '/quotations'
+    | '/customers/$id'
+    | '/quotations/$id'
   id:
-    '__root__' | '/' | '/customers' | '/plans' | '/products' | '/customers/$id'
+    | '__root__'
+    | '/'
+    | '/customers'
+    | '/plans'
+    | '/products'
+    | '/quotations'
+    | '/customers/$id'
+    | '/quotations/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +116,7 @@ export interface RootRouteChildren {
   CustomersRoute: typeof CustomersRouteWithChildren
   PlansRoute: typeof PlansRoute
   ProductsRoute: typeof ProductsRoute
+  QuotationsRoute: typeof QuotationsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -109,12 +149,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/quotations': {
+      id: '/quotations'
+      path: '/quotations'
+      fullPath: '/quotations'
+      preLoaderRoute: typeof QuotationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/customers/$id': {
       id: '/customers/$id'
       path: '/$id'
       fullPath: '/customers/$id'
       preLoaderRoute: typeof CustomersIdRouteImport
       parentRoute: typeof CustomersRoute
+    }
+    '/quotations/$id': {
+      id: '/quotations/$id'
+      path: '/$id'
+      fullPath: '/quotations/$id'
+      preLoaderRoute: typeof QuotationsIdRouteImport
+      parentRoute: typeof QuotationsRoute
     }
   }
 }
@@ -131,11 +185,24 @@ const CustomersRouteWithChildren = CustomersRoute._addFileChildren(
   CustomersRouteChildren,
 )
 
+interface QuotationsRouteChildren {
+  QuotationsIdRoute: typeof QuotationsIdRoute
+}
+
+const QuotationsRouteChildren: QuotationsRouteChildren = {
+  QuotationsIdRoute: QuotationsIdRoute,
+}
+
+const QuotationsRouteWithChildren = QuotationsRoute._addFileChildren(
+  QuotationsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CustomersRoute: CustomersRouteWithChildren,
   PlansRoute: PlansRoute,
   ProductsRoute: ProductsRoute,
+  QuotationsRoute: QuotationsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
