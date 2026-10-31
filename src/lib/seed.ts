@@ -157,7 +157,7 @@ export function buildSeed(): DemoDatabase {
     if (amount >= invoice.grandTotal - 0.01) invoice.status = "paid";
   };
 
-  const s1 = subscriptions[0], s2 = subscriptions[1], s3 = subscriptions[2], s5 = subscriptions[4];
+  const s1 = subscriptions[0]!, s2 = subscriptions[1]!, s3 = subscriptions[2]!, s5 = subscriptions[4]!;
   const i1a = addInvoice(s1, daysAgo(38)); addPayment(i1a, i1a.grandTotal, "upi", daysAgo(33), "UPI ref 40217345");
   const i1b = addInvoice(s1, daysAgo(8)); addPayment(i1b, Math.round(i1b.grandTotal * 0.5), "bank_transfer", daysAgo(3), "Partial — NEFT");
   const i2a = addInvoice(s2, daysAgo(75)); addPayment(i2a, i2a.grandTotal, "card", daysAgo(70));
@@ -168,7 +168,7 @@ export function buildSeed(): DemoDatabase {
   const i5b = addInvoice(s5, daysAgo(30)); addPayment(i5b, i5b.grandTotal, "cash", daysAgo(24));
   // Overdue standalone invoice for s3's add-on
   inv += 1;
-  const addon = products[5];
+  const addon = products[5]!;
   invoices.push({
     id: uid(), number: `INV-${mk(inv)}`, customerId: s3.customerId, subscriptionId: s3.id, subscriptionNumber: s3.number,
     lines: [{ id: uid(), description: `${addon.name} × 1`, qty: 1, unitPrice: addon.salesPrice, taxPercent: 18, discountAmount: 0 }],
