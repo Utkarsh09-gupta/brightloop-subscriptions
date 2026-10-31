@@ -9,9 +9,13 @@ import {
   type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { Toaster } from "@/components/ui/sonner";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/layout/app-sidebar";
+import { Topbar } from "@/components/layout/topbar";
 
 function NotFoundComponent() {
   return (
@@ -78,16 +82,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Brightloop — Subscription Management" },
+      { name: "description", content: "Subscription management platform for Brightloop Software: customers, plans, quotations, recurring billing, invoices, payments and analytics." },
+      { property: "og:title", content: "Brightloop — Subscription Management" },
+      { property: "og:description", content: "Manage the complete subscription lifecycle: quotations, recurring billing, invoices, payments and analytics." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:card", content: "summary" },
     ],
     links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap" },
       {
         rel: "stylesheet",
         href: appCss,
@@ -120,8 +125,16 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <SidebarProvider style={{ "--sidebar-width": "15rem", "--sidebar-width-icon": "3rem" } as React.CSSProperties}>
+        <AppSidebar />
+        <div className="flex min-h-screen w-full flex-col md:ml-[var(--sidebar-width)] group-data-[collapsible=icon]:md:ml-[var(--sidebar-width-icon)] transition-[margin]">
+          <Topbar />
+          <main className="flex-1 p-4 md:p-6">
+            <Outlet />
+          </main>
+        </div>
+        <Toaster position="bottom-right" richColors />
+      </SidebarProvider>
     </QueryClientProvider>
   );
 }
