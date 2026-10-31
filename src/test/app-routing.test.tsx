@@ -30,4 +30,11 @@ describe("App routing", () => {
     const signupMatches = router.matchRoutes("/signup");
     expect(signupMatches.at(-1)?.routeId).toBe("/signup");
   });
+
+  it("matches /analytics executive reporting route cleanly", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+
+    const analyticsMatches = router.matchRoutes("/analytics");
+    expect(analyticsMatches.at(-1)?.routeId).toBe("/analytics");
+  });
 });
