@@ -65,7 +65,6 @@ const NAV: NavGroup[] = [
 export function AppSidebar() {
   const role = useStore((s) => s.role);
   const pathname = useRouterState({ select: (r) => r.location.pathname });
-  void _unused;
 
   return (
     <Sidebar collapsible="icon" className="border-sidebar-border">
