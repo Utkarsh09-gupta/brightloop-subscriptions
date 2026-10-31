@@ -1,7 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
   BarChart3, Boxes, CalendarClock, FileText, LayoutDashboard, Landmark, Percent,
-  Receipt, Settings2, Tags, Users, Loopable as _unused,
+  Receipt, Settings2, Tags, Users,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import {
