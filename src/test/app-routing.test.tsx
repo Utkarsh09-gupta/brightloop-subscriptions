@@ -20,4 +20,14 @@ describe("App routing", () => {
     const paymentMatches = router.matchRoutes("/payments");
     expect(paymentMatches.at(-1)?.routeId).toBe("/payments");
   });
+
+  it("matches /login and /signup auth routes cleanly", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+
+    const loginMatches = router.matchRoutes("/login");
+    expect(loginMatches.at(-1)?.routeId).toBe("/login");
+
+    const signupMatches = router.matchRoutes("/signup");
+    expect(signupMatches.at(-1)?.routeId).toBe("/signup");
+  });
 });

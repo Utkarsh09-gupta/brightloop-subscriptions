@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
-import { useNavigate, useRouterState } from "@tanstack/react-router";
-import { Bell, Command, LogOut, RotateCcw, Search, User } from "lucide-react";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { Bell, Command, LogOut, RotateCcw, Search, User, LogIn } from "lucide-react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -149,9 +149,8 @@ export function Topbar() {
               <RotateCcw className="size-4" /> Reset demo data
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => toast.info("Sign-in is simulated in this front-end demo")}>
-              <LogOut className="size-4" /> Sign out
-            </DropdownMenuItem>
+            <DropdownMenuItem asChild><Link to="/login" className="flex items-center gap-2 cursor-pointer"><LogIn className="size-4" /> Switch account / Sign in</Link></DropdownMenuItem>
+            <DropdownMenuItem onClick={() => { store.logout(); toast.success("Signed out"); navigate({ to: "/login" }); }} className="text-destructive flex items-center gap-2 cursor-pointer"><LogOut className="size-4" /> Sign out</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

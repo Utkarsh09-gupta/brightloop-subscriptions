@@ -205,3 +205,14 @@ export interface AppNotification {
   read: boolean;
   kind: "info" | "warning" | "success";
 }
+
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: Role;
+  company?: string;
+  customerId?: string;
+  createdAt: string;
+}

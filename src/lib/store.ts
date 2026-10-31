@@ -3,14 +3,19 @@ import { persist } from "zustand/middleware";
 import type {
   AppNotification, Customer, Discount, DiscountUsage, Invoice, InvoiceLine, Payment, Plan,
   Product, Quotation, QuotationTemplate, Role, Subscription, SubscriptionLine, SubscriptionStatus,
-  TaxRule,
+  TaxRule, User,
 } from "./types";
 import { buildSeed, type DemoDatabase } from "./seed";
 import { addDays, addMonths, frequencyDays, today, uid } from "./format";
 import { evaluateDiscount, invoiceTotals, taxPercentFor } from "./calc";
 
 interface AppState extends DemoDatabase {
+  currentUser: User | null;
+  users: User[];
   role: Role;
+  login: (email: string) => boolean;
+  signup: (userData: { name: string; email: string; role: Role; company?: string }) => User;
+  logout: () => void;
   demoCustomerId: string; // which customer the "customer" role views the portal as
   setRole: (r: Role) => void;
   setDemoCustomerId: (id: string) => void;
@@ -79,7 +84,61 @@ export const useStore = create<AppState>()(
   persist(
     (set, get) => ({
       ...buildSeed(),
+      currentUser: { id: "u-1", name: "Utkarsh Gupta", email: "admin@brightloop.in", role: "admin", company: "Brightloop Software", createdAt: "2026-01-01" },
+      users: [
+        { id: "u-1", name: "Utkarsh Gupta", email: "admin@brightloop.in", role: "admin", company: "Brightloop Software", createdAt: "2026-01-01" },
+        { id: "u-2", name: "Rahul Verma", email: "staff@brightloop.in", role: "staff", company: "Brightloop Software", createdAt: "2026-01-15" },
+        { id: "u-3", name: "Aarav Sharma", email: "billing@acme.com", role: "customer", company: "Acme Enterprises", customerId: "c-1", createdAt: "2026-02-01" },
+      ],
       role: "admin",
+
+      login: (email: string) => {
+        const s = get();
+        const user = s.users?.find((u) => u.email.toLowerCase() === email.toLowerCase()) || {
+          id: uid(),
+          name: email.split("@")[0] || "User",
+          email,
+          role: email.includes("admin") ? ("admin" as const) : email.includes("staff") ? ("staff" as const) : ("customer" as const),
+          createdAt: today(),
+        };
+        const demoCustId = user.role === "customer" ? (user.customerId || s.customers[0]?.id || "") : s.demoCustomerId;
+        set({ currentUser: user, role: user.role, demoCustomerId: demoCustId });
+        return true;
+      },
+
+      signup: (userData) => {
+        const s = get();
+        let custId: string | undefined = undefined;
+        if (userData.role === "customer") {
+          const newCustomer: Customer = {
+            id: uid(),
+            name: userData.name,
+            company: userData.company || (userData.name + "'s Company"), 
+            email: userData.email,
+            phone: "+91 98765 43210",
+            billingAddress: "Registered Office, India",
+            taxId: "09AAACB1234D1Z5",
+            createdAt: today(),
+          };
+          s.upsertCustomer(newCustomer);
+          custId = newCustomer.id;
+        }
+        const newUser: User = {
+          id: uid(),
+          ...userData,
+          customerId: custId,
+          createdAt: today(),
+        };
+        set((state) => ({
+          users: [newUser, ...(state.users || [])],
+          currentUser: newUser,
+          role: newUser.role,
+          demoCustomerId: custId || state.demoCustomerId,
+        }));
+        return newUser;
+      },
+
+      logout: () => set({ currentUser: null }),
       demoCustomerId: "",
 
       setRole: (role) => set({ role }),

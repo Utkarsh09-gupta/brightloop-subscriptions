@@ -351,3 +351,4 @@ export function CustomerCheckoutDialog({ invoice, onClose, onSuccess }: Customer
     </Dialog>
   );
 }
+

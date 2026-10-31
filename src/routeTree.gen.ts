@@ -12,10 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CustomersRouteImport } from './routes/customers'
 import { Route as InvoicesRouteImport } from './routes/invoices'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as PaymentsRouteImport } from './routes/payments'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as QuotationsRouteImport } from './routes/quotations'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SubscriptionsRouteImport } from './routes/subscriptions'
 import { Route as CustomersIdRouteImport } from './routes/customers.$id'
 import { Route as InvoicesIdRouteImport } from './routes/invoices.$id'
@@ -37,6 +39,11 @@ const InvoicesRoute = InvoicesRouteImport.update({
   path: '/invoices',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PaymentsRoute = PaymentsRouteImport.update({
   id: '/payments',
   path: '/payments',
@@ -55,6 +62,11 @@ const ProductsRoute = ProductsRouteImport.update({
 const QuotationsRoute = QuotationsRouteImport.update({
   id: '/quotations',
   path: '/quotations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SubscriptionsRoute = SubscriptionsRouteImport.update({
@@ -87,10 +99,12 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/customers': typeof CustomersRouteWithChildren
   '/invoices': typeof InvoicesRouteWithChildren
+  '/login': typeof LoginRoute
   '/payments': typeof PaymentsRoute
   '/plans': typeof PlansRoute
   '/products': typeof ProductsRoute
   '/quotations': typeof QuotationsRouteWithChildren
+  '/signup': typeof SignupRoute
   '/subscriptions': typeof SubscriptionsRouteWithChildren
   '/customers/$id': typeof CustomersIdRoute
   '/invoices/$id': typeof InvoicesIdRoute
@@ -101,10 +115,12 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/customers': typeof CustomersRouteWithChildren
   '/invoices': typeof InvoicesRouteWithChildren
+  '/login': typeof LoginRoute
   '/payments': typeof PaymentsRoute
   '/plans': typeof PlansRoute
   '/products': typeof ProductsRoute
   '/quotations': typeof QuotationsRouteWithChildren
+  '/signup': typeof SignupRoute
   '/subscriptions': typeof SubscriptionsRouteWithChildren
   '/customers/$id': typeof CustomersIdRoute
   '/invoices/$id': typeof InvoicesIdRoute
@@ -116,10 +132,12 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/customers': typeof CustomersRouteWithChildren
   '/invoices': typeof InvoicesRouteWithChildren
+  '/login': typeof LoginRoute
   '/payments': typeof PaymentsRoute
   '/plans': typeof PlansRoute
   '/products': typeof ProductsRoute
   '/quotations': typeof QuotationsRouteWithChildren
+  '/signup': typeof SignupRoute
   '/subscriptions': typeof SubscriptionsRouteWithChildren
   '/customers/$id': typeof CustomersIdRoute
   '/invoices/$id': typeof InvoicesIdRoute
@@ -132,10 +150,12 @@ export interface FileRouteTypes {
     | '/'
     | '/customers'
     | '/invoices'
+    | '/login'
     | '/payments'
     | '/plans'
     | '/products'
     | '/quotations'
+    | '/signup'
     | '/subscriptions'
     | '/customers/$id'
     | '/invoices/$id'
@@ -146,10 +166,12 @@ export interface FileRouteTypes {
     | '/'
     | '/customers'
     | '/invoices'
+    | '/login'
     | '/payments'
     | '/plans'
     | '/products'
     | '/quotations'
+    | '/signup'
     | '/subscriptions'
     | '/customers/$id'
     | '/invoices/$id'
@@ -160,10 +182,12 @@ export interface FileRouteTypes {
     | '/'
     | '/customers'
     | '/invoices'
+    | '/login'
     | '/payments'
     | '/plans'
     | '/products'
     | '/quotations'
+    | '/signup'
     | '/subscriptions'
     | '/customers/$id'
     | '/invoices/$id'
@@ -175,10 +199,12 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CustomersRoute: typeof CustomersRouteWithChildren
   InvoicesRoute: typeof InvoicesRouteWithChildren
+  LoginRoute: typeof LoginRoute
   PaymentsRoute: typeof PaymentsRoute
   PlansRoute: typeof PlansRoute
   ProductsRoute: typeof ProductsRoute
   QuotationsRoute: typeof QuotationsRouteWithChildren
+  SignupRoute: typeof SignupRoute
   SubscriptionsRoute: typeof SubscriptionsRouteWithChildren
 }
 
@@ -203,6 +229,13 @@ declare module '@tanstack/react-router' {
       path: '/invoices'
       fullPath: '/invoices'
       preLoaderRoute: typeof InvoicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/payments': {
@@ -231,6 +264,13 @@ declare module '@tanstack/react-router' {
       path: '/quotations'
       fullPath: '/quotations'
       preLoaderRoute: typeof QuotationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/subscriptions': {
@@ -323,10 +363,12 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CustomersRoute: CustomersRouteWithChildren,
   InvoicesRoute: InvoicesRouteWithChildren,
+  LoginRoute: LoginRoute,
   PaymentsRoute: PaymentsRoute,
   PlansRoute: PlansRoute,
   ProductsRoute: ProductsRoute,
   QuotationsRoute: QuotationsRouteWithChildren,
+  SignupRoute: SignupRoute,
   SubscriptionsRoute: SubscriptionsRouteWithChildren,
 }
 export const routeTree = rootRouteImport

@@ -7,6 +7,7 @@ import {
   HeadContent,
   Scripts,
   type ErrorComponentProps,
+  useRouterState,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import { Toaster } from "@/components/ui/sonner";
@@ -122,19 +123,28 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isAuthPage = pathname === "/login" || pathname === "/signup";
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SidebarProvider style={{ "--sidebar-width": "15rem", "--sidebar-width-icon": "3rem" } as React.CSSProperties}>
-        <AppSidebar />
-        <div className="flex min-h-screen w-full flex-col">
-          <Topbar />
-          <main className="flex-1 p-4 md:p-6">
-            <Outlet />
-          </main>
+      {isAuthPage ? (
+        <div className="min-h-screen w-full bg-background flex flex-col">
+          <Outlet />
+          <Toaster position="bottom-right" richColors />
         </div>
-        <Toaster position="bottom-right" richColors />
-      </SidebarProvider>
+      ) : (
+        <SidebarProvider style={{ "--sidebar-width": "15rem", "--sidebar-width-icon": "3rem" } as React.CSSProperties}>
+          <AppSidebar />
+          <div className="flex min-h-screen w-full flex-col">
+            <Topbar />
+            <main className="flex-1 p-4 md:p-6">
+              <Outlet />
+            </main>
+          </div>
+          <Toaster position="bottom-right" richColors />
+        </SidebarProvider>
+      )}
     </QueryClientProvider>
   );
 }
