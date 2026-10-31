@@ -57,7 +57,6 @@ export function QuotationDialog({ quotation, onClose }: { quotation: Quotation |
       status: quotation?.status ?? "draft", notes, taxPercent, createdAt: quotation?.createdAt ?? today(),
     };
     store.upsertQuotation(q);
-    if (isNew) store.upsertQuotation(q); // upsert covers both; counter bump:
     if (isNew) useStore.setState((s) => ({ counters: { ...s.counters, quotation: s.counters.quotation + 1 } }));
     toast.success(isNew ? "Quotation created" : "Quotation updated");
     onClose();

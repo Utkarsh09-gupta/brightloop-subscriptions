@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, Outlet, useChildMatches } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Eye, Plus, Search, Send, CheckCircle2, XCircle } from "lucide-react";
@@ -23,6 +23,9 @@ export const Route = createFileRoute("/quotations")({
 });
 
 function QuotationsPage() {
+  const childMatches = useChildMatches();
+  if (childMatches.length > 0) return <Outlet />;
+
   const store = useStore();
   const navigate = useNavigate();
   const search = Route.useSearch();
