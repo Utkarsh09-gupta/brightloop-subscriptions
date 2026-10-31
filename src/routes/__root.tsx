@@ -127,7 +127,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <SidebarProvider style={{ "--sidebar-width": "15rem", "--sidebar-width-icon": "3rem" } as React.CSSProperties}>
         <AppSidebar />
-        <div className="flex min-h-screen w-full flex-col md:ml-[var(--sidebar-width)] group-data-[collapsible=icon]:md:ml-[var(--sidebar-width-icon)] transition-[margin]">
+        <div className="flex min-h-screen w-full flex-col">
           <Topbar />
           <main className="flex-1 p-4 md:p-6">
             <Outlet />
